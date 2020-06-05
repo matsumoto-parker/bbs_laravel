@@ -19,6 +19,12 @@ class PostController extends Controller
         return view('posts.create');
     }
 
+    public function show($id) {
+        $post = Post::find($id);
+
+        return view('posts.show', compact('post'));
+    }
+
     public function store(PostRequest $request) {
         $post = new Post;
 
@@ -31,6 +37,41 @@ class PostController extends Controller
         return redirect()->route('posts.index');
     }
 
+    public function edit($id) {
+        $post = Post::find($id);
 
+        if (Auth::id() !== $post->user_id) {
+            return abort(404);
+        }
+
+        return view('posts.edit', compact('post'));
+    }
+
+    public function update(PostRequest $request, $id) {
+        $post = Post::find($id);
+
+        if (Auth::id() !== $post->user_id) {
+            return abort(404);
+        }
+
+        $post->title   = $request->title;
+        $post->body    = $request->body;
+
+        $post->save();
+
+        return redirect()->route('posts.index');
+    }
+
+    public function destroy($id) {
+        $post = Post::find($id);
+
+        if (Auth::id() !== $post->user_id) {
+            return abort(404);
+        }
+
+        $post->delete();
+
+        return redirect()->route('posts.index');
+    }
 
 }
