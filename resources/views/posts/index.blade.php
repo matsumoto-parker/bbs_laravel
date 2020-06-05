@@ -10,14 +10,16 @@
                 <div class="card-header">
                     bbs
                 </div>
+                @foreach ($posts as $post)
                 <div class="card-body">
-                    <h5 class="card-title">title：</h5>
-                    <p class="card-text">content：</p>
+                    <h5 class="card-title">title：{{ $post->title }}</h5>
+                    <p class="card-text">content：{{ $post->body }}</p>
                     <a href="#" class="btn btn-primary">詳細</a>
                 </div>
                 <div class="card-footer text-muted">
-                    posted at：
+                    posted at：{{ $post->created_at }}
                 </div>
+                @endforeach
             </div>
         </div>
     </div>
