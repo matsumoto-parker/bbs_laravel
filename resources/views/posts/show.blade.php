@@ -13,7 +13,7 @@
                 <div class="card-body">
                     <h5 class="card-title">title：{{ $post->title }}</h5>
                     <p class="card-text">content：{{ $post->body }}</p>
-
+                    <img src="{{ $post->image_path }} " alt="">
                     @if ( $post->user_id === Auth::id() )
                     <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-primary">編集画面へ</a>
                     <form action="{{ route('posts.destroy', $post->id) }}" method="post">

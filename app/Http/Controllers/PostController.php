@@ -7,6 +7,7 @@ use App\Http\Requests\PostRequest;
 use Auth;
 use App\Post;
 use App\Comment;
+use JD\Cloudder\Facades\Cloudder;
 
 class PostController extends Controller
 {
@@ -34,6 +35,19 @@ class PostController extends Controller
         $post->title   = $request->title;
         $post->body    = $request->body;
         $post->user_id = Auth::id();
+
+        if ($image = $request->file('image')) {
+            $image_path = $image->getRealPath();
+            Cloudder::upload($image_path, null);
+
+            $publicId = Cloudder::getPublicId();
+            $logoUrl = Cloudder::show($publicId,[
+                'width'  => 200,
+                'height' => 200
+            ]);
+            $post->image_path = $logoUrl;
+            $post->public_id   = $publicId;
+        }
 
         $post->save();
 
@@ -70,6 +84,10 @@ class PostController extends Controller
 
         if (Auth::id() !== $post->user_id) {
             return abort(404);
+        }
+
+        if (isset($post->public_id)) {
+            Cloudder::destroyImage($post->public_id);
         }
 
         $post->delete();
