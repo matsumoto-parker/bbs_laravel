@@ -28,3 +28,5 @@ Route::get('/posts/{post}', 'PostController@show')->name('posts.show');
 Route::get('/posts/{post}/edit', 'PostController@edit')->name('posts.edit');
 Route::PATCH('/posts/{post}', 'PostController@update')->name('posts.update');
 Route::delete('/posts/{post}', 'PostController@destroy')->name('posts.destroy');
+
+Route::resource('comments', 'CommentController');
