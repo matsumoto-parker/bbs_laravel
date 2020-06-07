@@ -13,6 +13,7 @@
                 <div class="card-body">
                     <h5 class="card-title">title：{{ $post->title }}</h5>
                     <p class="card-text">content：{{ $post->body }}</p>
+
                     @if ( $post->user_id === Auth::id() )
                     <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-primary">編集画面へ</a>
                     <form action="{{ route('posts.destroy', $post->id) }}" method="post">
@@ -28,5 +29,19 @@
             </div>
         </div>
     </div>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form action="{{ route('comments.store') }}" method="POST">
+                {{csrf_field()}}
+                <input type="hidden" name="post_id" value="{{ $post->id }}">
+                <div class="form-group">
+                    <label for="">コメント</label>
+                    <textarea class="form-control" placeholder="内容" rows="5"　name="body"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">コメントする</button>
+            </form>
+        </div>
+    </div>
+</div>
 </div>
 @endsection
