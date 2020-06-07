@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\CommentRequest;
 use Auth;
 use App\Comment;
 use App\Post;
@@ -36,7 +37,7 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CommentRequest $request)
     {
         $comment = new Comment;
 
@@ -47,8 +48,9 @@ class CommentController extends Controller
         $comment->save();
 
         $post = Post::find($request->post_id);
+        $comments = Comment::where('post_id', $request->post_id)->get();
 
-        return view('posts.show', compact('post'));
+        return view('posts.show', compact('post', 'comments'));
     }
 
     /**

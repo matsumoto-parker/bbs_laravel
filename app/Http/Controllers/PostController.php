@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
 use Auth;
 use App\Post;
+use App\Comment;
 
 class PostController extends Controller
 {
@@ -22,7 +23,9 @@ class PostController extends Controller
     public function show($id) {
         $post = Post::find($id);
 
-        return view('posts.show', compact('post'));
+        $comments = Comment::where('post_id', $id)->get();
+
+        return view('posts.show', compact('post', 'comments'));
     }
 
     public function store(PostRequest $request) {
